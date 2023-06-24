@@ -53,7 +53,6 @@ public class MarvelApiClientTests {
     void testBuildUrlRequestWithCharacterId() {
         int characterId = 123;
 		MarvelApiClient apiClient = new MarvelApiClient(BASE_URL, API_KEY, PRIVATE_KEY, TS, characterId);
-        System.err.println(apiClient.buildUrlRequest());
         assertAll("Función buildUrlRequest en clase MarvelApiClient",
             () -> assertNotNull(apiClient.buildUrlRequest(), "La url no debería ser null")
             , () -> assertFalse(apiClient.buildUrlRequest().contains("limit"), "La URL debe contener limit")
