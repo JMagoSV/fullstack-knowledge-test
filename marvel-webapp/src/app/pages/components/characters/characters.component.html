@@ -1,0 +1,69 @@
+<div class="mt-2 ml-2 mr-2">
+    <p-table [value]="listData" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'"
+        selectionMode="single" [(selection)]="selected" dataKey="id" (onRowSelect)="onRowSelect($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>¿Quién es?</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-character>
+            <tr [pSelectableRow]="character">
+                <td>
+                    <p-image *ngIf="character.thumbnail"
+                        [src]="character.thumbnail.path + '.' + character.thumbnail.extension"
+                        alt="Image" width="250"></p-image>
+                </td>
+                <td>{{ character.name }}</td>
+                <td>{{ character.description }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [header]="selected.name" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }" *ngIf="selected"
+    [style]="{ width: '80vw' }" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="grid nested">
+        <div class="col-8">
+          <div class="grid">
+            <div class="col-12">
+              <div class="box">
+                {{selected.description ? selected.description : 'Descripción no disponible'}}
+              </div>
+            </div>
+            <div class="col-12">
+                <p-tabView>
+                    <p-tabPanel header="Comics" *ngIf="selected.comics">
+                        <ng-template ngFor let-item let-i="index" [ngForOf]="selected.comics.items">
+                            <p-chip [label]="item.name" styleClass="mt-2 ml-2"></p-chip>
+                        </ng-template>
+                    </p-tabPanel>
+                    <p-tabPanel header="Series" *ngIf="selected.series">
+                        <ng-template ngFor let-item let-i="index" [ngForOf]="selected.series.items">
+                            <p-chip [label]="item.name" styleClass="mt-2 ml-2"></p-chip>
+                        </ng-template>
+                    </p-tabPanel>
+                    <p-tabPanel header="Historias" *ngIf="selected.stories">
+                        <ng-template ngFor let-item let-i="index" [ngForOf]="selected.stories.items">
+                            <p-chip [label]="item.name" styleClass="mt-2 ml-2"></p-chip>
+                        </ng-template>
+                    </p-tabPanel>
+                    <p-tabPanel header="Eventos" *ngIf="selected.events">
+                        <ng-template ngFor let-item let-i="index" [ngForOf]="selected.events.items">
+                            <p-chip [label]="item.name" styleClass="mt-2 ml-2"></p-chip>
+                        </ng-template>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="box box-stretched">
+                <p-image *ngIf="selected.thumbnail"
+                    [src]="selected.thumbnail.path + '.' + selected.thumbnail.extension"
+                    alt="Image" width="250"></p-image>
+          </div>
+        </div>
+    </div>
+</p-dialog>
