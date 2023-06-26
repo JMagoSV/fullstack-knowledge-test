@@ -7,15 +7,19 @@ package com.dev.example.marvelapi.controllers;
 
 import com.dev.example.marvelapi.MarvelController;
 import com.dev.example.marvelapi.dao.repository.EventRepository;
+import com.dev.example.marvelapi.dao.service.EventService;
 import com.dev.example.marvelapi.models.Events;
 import com.dev.example.marvelconsumer.MarvelApiClient;
 import com.dev.example.marvelconsumer.models.MarvelData;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -34,29 +38,30 @@ public class CharactersController {
     private String ts;
     
     @Autowired
-    private EventRepository eventRepository;
+    private EventService eventService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/characters")
-    public MarvelData getAll() {
+    public MarvelData getAll() throws Exception {
         MarvelApiClient apiClient = new MarvelApiClient(baseUrl, apiKey, privateKey, ts);
         // Saving register
-        Events event = new Events();
-        event.setType("ALL");
-        event.setUserRegistered("SYSTEM");
-        event.setCreatedAt(new Date());
-        eventRepository.save(event);
+        eventService.create("ALL");
         return apiClient.getCharacterData();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/characters/{id}")
    public MarvelData get(@PathVariable(value = "id") Integer id) throws Exception {
        MarvelApiClient apiClient = new MarvelApiClient(baseUrl, apiKey, privateKey, ts, id);
-        // Saving register
-        Events event = new Events();
-        event.setType("ID: " + id);
-        event.setUserRegistered("SYSTEM");
-        event.setCreatedAt(new Date());
-        eventRepository.save(event);
-        return apiClient.getCharacterData();
+       MarvelData marvelData = null;
+       try {
+           marvelData = apiClient.getCharacterData();
+           // Saving register
+           eventService.create("ID: " + id);
+       } catch (Exception ex) {
+           eventService.create("ERROR: " + id);
+    	   throw new ResponseStatusException(
+    			   HttpStatus.NOT_FOUND, "entity not found"
+		 );
+       }
+       return marvelData;
     }
 }

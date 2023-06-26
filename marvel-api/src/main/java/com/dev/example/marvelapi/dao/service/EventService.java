@@ -1,6 +1,6 @@
 package com.dev.example.marvelapi.dao.service;
 
-import java.util.LinkedHashMap;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -16,12 +16,15 @@ public class EventService implements EventServiceInt {
     EventRepository eventRepository;
 
     @Override
-    public Events create(LinkedHashMap<String, Object> entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Events create(String type) throws Exception {
+        // Saving register
+        Events event = new Events();
+        event.setType(type);
+        event.setUserRegistered("SYSTEM");
+        event.setCreatedAt(new Date());
+        return eventRepository.save(event);
     }
-
     
-
     @Override
     public List<Events> findAll() {
         return (List<Events>) eventRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));

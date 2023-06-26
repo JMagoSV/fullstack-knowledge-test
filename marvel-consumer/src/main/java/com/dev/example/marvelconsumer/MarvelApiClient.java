@@ -69,8 +69,9 @@ public class MarvelApiClient {
 
     /**
      * @return data response
+     * @throws Exception 
      */
-    public MarvelData getCharacterData() {
+    public MarvelData getCharacterData() throws Exception {
         MarvelData response = null;
         try {
             String body = restTemplate.getForObject(buildUrlRequest(), String.class);
@@ -78,7 +79,7 @@ public class MarvelApiClient {
             MarvelResponse map = objectMapper.readValue(body, MarvelResponse.class);
             response = map.getData();
         } catch (Exception ex) {
-            System.err.println(ex.getMessage());
+            throw new Exception(ex.getMessage());
         }
         return response;
     }
