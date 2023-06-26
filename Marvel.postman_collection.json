@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "95155b7b-bc13-44b3-83b5-5d10ab3304a4",
+		"name": "Marvel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4481750"
+	},
+	"item": [
+		{
+			"name": "Get all characters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/marvel/characters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"marvel",
+						"characters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get character by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/marvel/characters/{{characterId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"marvel",
+						"characters",
+						"{{characterId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/marvel/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"marvel",
+						"events"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
